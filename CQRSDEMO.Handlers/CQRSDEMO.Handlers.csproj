@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CQRSDemo.Commands\CQRSDemo.Commands.csproj" />
+    <ProjectReference Include="..\CQRSDemo.Data\CQRSDemo.Data.csproj" />
+    <ProjectReference Include="..\CQRSDemo.Queries\CQRSDemo.Queries.csproj" />
+    <ProjectReference Include="..\CQRSDemo.Repository\CQRSDemo.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
