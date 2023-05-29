@@ -12,6 +12,11 @@ namespace CQRSDemo.Repository.Interface
     {
         public Task<List<User>> GetAllUser();
 
+        public Task<User> GetUserData(long UserId);
         public Task<UserAdd> AddUserData(UserAdd user);
+
+        public Task<UserAdd> EditUserData(UserAdd user);
+
+        public Task<bool> DeleteUserData(long UserId);
     }
 }

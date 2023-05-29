@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -21,6 +21,10 @@
     <ProjectReference Include="..\CQRSDemo.Data\CQRSDemo.Data.csproj" />
     <ProjectReference Include="..\CQRSDEMO.Handlers\CQRSDEMO.Handlers.csproj" />
     <ProjectReference Include="..\CQRSDemo.Queries\CQRSDemo.Queries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

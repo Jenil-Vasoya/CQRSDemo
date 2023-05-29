@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRSDemo.Queries
+namespace CQRSDemo.Queries.Theme_Queries
 {
-    public class GetAllUserQuery : IRequest<List<User>>
+    public class GetThemeDataQuery : IRequest<MissionTheme>
     {
+        public long ThemeId { get; set; }
     }
 }

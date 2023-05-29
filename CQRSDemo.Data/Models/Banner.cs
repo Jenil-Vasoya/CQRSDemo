@@ -1,11 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CQRSDemo.Core.Models
 {
     public partial class Banner
     {
         public long BannerId { get; set; }
+        
+        [NotMapped]
+        public IFormFile? BannerImg { get; set; }
+
         public string Image { get; set; } = null!;
         public string? Text { get; set; }
         public int? SortOrder { get; set; }

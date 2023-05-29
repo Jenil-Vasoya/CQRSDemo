@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRSDemo.Commands
+namespace CQRSDemo.Commands.User_Commands
 {
     public class AddUserDataCommand : IRequest<UserAdd>
     {

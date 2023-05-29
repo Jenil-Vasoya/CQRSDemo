@@ -1,5 +1,5 @@
 ﻿using CQRSDemo.Core.Models;
-using CQRSDemo.Queries;
+using CQRSDemo.Queries.User_Queries;
 using CQRSDemo.Repository.Interface;
 using MediatR;
 using System;
