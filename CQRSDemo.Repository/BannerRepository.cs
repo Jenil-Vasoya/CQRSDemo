@@ -93,5 +93,26 @@ namespace CQRSDemo.Repository
             return await _CIPlatformContext.Banners.FirstAsync(u => u.BannerId == bannerId);
         }
 
+        public async Task<List<Banner>?> SearchBanner(string? search, int page, int pageSize)
+        {
+            List<Banner> banners = await _CIPlatformContext.Banners.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                banners =  banners.Where(b => b.Text.Contains(search)).ToList();
+                count++;
+            }
+            if(page != 0 && pageSize != 0)
+            {
+                banners = banners.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return banners;
+            }
+            return null;
+        }
+
     }
 }

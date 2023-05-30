@@ -17,5 +17,7 @@ namespace CQRSDemo.Repository.Interface
         Task<List<MissionApplication>> GetAllApplication();
 
         Task<MissionApplication> GetApplication(long ApplicationId);
+
+        Task<List<MissionApplication>?> SearchApplication(string? search, int page, int pageSize);
     }
 }

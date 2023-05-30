@@ -49,10 +49,12 @@ builder.Services.AddTransient<IRequestHandler<GetAllBannerQuery, List<Banner>>, 
 builder.Services.AddTransient<IRequestHandler<AddBannerDataCommand, Banner>, AddBannerDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditBannerDataCommand, Banner>, EditBannerDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetBannerDataQuery, Banner>, GetBannerDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchBannerQuery, List<Banner>>, SearchBannerHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteBannerDataCommand, bool>, DeleteBannerDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllApplicationQuery, List<MissionApplication>>, GetAllApplicationHandler>();
 builder.Services.AddTransient<IRequestHandler<EditApplicationDataCommand, MissionApplication>, EditApplicationDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetApplicationDataQuery, MissionApplication>, GetApplicationDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchApplicationQuery, List<MissionApplication>>, SearchApplicationHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteApplicationDataCommand, bool>, DeleteApplicationDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllStoryQuery, List<Story>>, GetAllStoryHandler>();
 builder.Services.AddTransient<IRequestHandler<EditStoryDataCommand, Story>, EditStoryDataHandler>();

@@ -10,13 +10,11 @@ namespace CQRSDemo.Repository.Interface
 {
     public interface IBannerRepository
     {
-        public Task<List<Banner>> GetAllBanner();
-
-        public Task<Banner> GetBannerData(long BannerId);
-        public Task<Banner> AddBannerData(Banner banner);
-
-        public Task<Banner> EditBannerData(Banner banner);
-
-        public Task<bool> DeleteBannerData(long BannerId);
+        Task<List<Banner>> GetAllBanner();
+        Task<Banner> GetBannerData(long BannerId);
+        Task<Banner> AddBannerData(Banner banner);
+        Task<Banner> EditBannerData(Banner banner);
+        Task<bool> DeleteBannerData(long BannerId);
+        Task<List<Banner>?> SearchBanner(string? search, int page, int pageSize);
     }
 }

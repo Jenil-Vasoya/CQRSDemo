@@ -11,6 +11,7 @@ namespace CQRSDemo.Repository
 {
     public class ApplicationRepository :IApplicationRepository
     {
+
         private readonly CIPlatformContext _CIPlatformContext;
 
         public ApplicationRepository(CIPlatformContext CIPlatformContext)
@@ -55,6 +56,30 @@ namespace CQRSDemo.Repository
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<MissionApplication>?> SearchApplication(string? search, int page, int pageSize)
+        {
+            List<Mission> missions = await _CIPlatformContext.Missions.ToListAsync();
+            List<MissionApplication> applications = await _CIPlatformContext.MissionApplications
+                .Where(a => missions.Select(m => m.MissionId).Contains(a.MissionId))
+                .ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                applications = applications.Where(a => a.Mission.Title.Contains(search)).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                applications = applications.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return applications;
+            }
+            return null;
         }
     }
 }

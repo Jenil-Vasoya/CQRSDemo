@@ -22,12 +22,28 @@ namespace CQRSDemo.Controllers
         }
 
 
-        //[HttpGet]
-        //[Route("Banner Pagination/Search")]
-        //public async Task<IActionResult> GetBanner(string? search, int currentPage, int pageSize)
-        //{
-
-        //}
+        [HttpGet]
+        [Route("Banner Pagination/Search")]
+        public async Task<IActionResult> FindBanner([FromQuery] Pagination dto)
+        {
+            if(string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<Banner> banners = await mediator.Send(dto.ToBannerQuery());
+            if(banners == null || banners.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(banners);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
         [HttpGet]
         [Route("Get Banner")]

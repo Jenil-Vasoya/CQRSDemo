@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Commands.Application_Commands;
 using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Application_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,30 @@ namespace CQRSDemo.Controllers
         public ApplicationController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("Application Pagination/Search")]
+        public async Task<IActionResult> FindApplication([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+
+            var applications = await mediator.Send(dto.ToApplicationQuery());
+            if (applications == null || applications.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(applications);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]
