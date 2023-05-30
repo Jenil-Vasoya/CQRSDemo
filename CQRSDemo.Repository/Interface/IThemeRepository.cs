@@ -18,5 +18,7 @@ namespace CQRSDemo.Repository.Interface
         Task<List<MissionTheme>> GetAllTheme();
 
         Task<MissionTheme> GetTheme(long ThemeId);
+
+        Task<List<MissionTheme>?> SearchTheme(string? search, int page, int pageSize);
     }
 }

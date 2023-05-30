@@ -1,4 +1,7 @@
 ﻿using CQRSDemo.Commands.Mission_Commands;
+using CQRSDemo.Controllers.DTOS;
+using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Mission_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +18,38 @@ namespace CQRSDemo.Controllers
         public MissionController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpPost]
+        [Route("Mission Add/Edit")]
+        public async Task<IActionResult> AddMission([FromForm] MissionAddModel dto)
+        {
+            var mission = await mediator.Send(new AddMissionDataCommand(dto));
+            
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        [Route("Mission Pagination/Search")]
+        public async Task<IActionResult> FindMission([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<Mission> missions = await mediator.Send(dto.ToMissionQuery());
+            if (missions == null || missions.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(missions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]

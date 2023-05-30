@@ -64,5 +64,26 @@ namespace CQRSDemo.Repository
             }
             return false;
         }
+
+        public async Task<List<MissionTheme>?> SearchTheme(string? search, int page, int pageSize)
+        {
+            List<MissionTheme> themes = await _CIPlatformContext.MissionThemes.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                themes = themes.Where(b => b.Titile.ToLower().Contains(search.ToLower())).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                themes = themes.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return themes;
+            }
+            return null;
+        }
     }
 }

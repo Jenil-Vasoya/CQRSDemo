@@ -18,5 +18,7 @@ namespace CQRSDemo.Repository.Interface
         Task<List<Cmspage>> GetAllCMS();
 
         Task<Cmspage> GetCMS(long CMSId);
+
+        Task<List<Cmspage>?> SearchCMS(string? search, int page, int pageSize);
     }
 }

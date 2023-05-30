@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CQRSDemo.Data.ViewModel;
+using System;
 using System.Collections.Generic;
 
 namespace CQRSDemo.Core.Models
@@ -56,5 +57,10 @@ namespace CQRSDemo.Core.Models
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Story> Stories { get; set; }
         public virtual ICollection<TimeSheet> TimeSheets { get; set; }
+
+        public static implicit operator Mission(MissionAddModel v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

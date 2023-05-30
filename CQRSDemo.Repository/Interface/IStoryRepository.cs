@@ -17,5 +17,7 @@ namespace CQRSDemo.Repository.Interface
         Task<List<Story>> GetAllStory();
 
         Task<Story> GetStory(long StoryId);
+
+        Task<List<Story>?> SearchStory(string? search, int page, int pageSize);
     }
 }

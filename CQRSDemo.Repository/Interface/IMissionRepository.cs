@@ -1,4 +1,5 @@
 ﻿using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace CQRSDemo.Repository.Interface
 {
     public interface IMissionRepository
     {
-        public Task<List<Mission>> GetAllMission();
-
-        public Task<Mission> GetMissionData(long MissionId);
-
-        public Task<bool> DeleteMissionData(long MissionId);
+        Task<List<Mission>> GetAllMission();
+        Task<Mission> GetMissionData(long MissionId);
+        Task<bool> DeleteMissionData(long MissionId);
+        Task<List<Mission>?> SearchMission(string? search, int page, int pageSize);
+        Task<MissionAddModel> AddMissionData(MissionAddModel model);
     }
 }

@@ -18,7 +18,7 @@ namespace CQRSDEMO.Handlers.Application_Handlers
         {
             _applicationRepository = applicationRepository;
         }
-        public async Task<List<MissionApplication>> Handle(SearchApplicationQuery request, CancellationToken cancellationToken)
+        public async Task<List<MissionApplication>?> Handle(SearchApplicationQuery request, CancellationToken cancellationToken)
         {
             return await _applicationRepository.SearchApplication(request.Search,request.Page,request.PageSize);
         }

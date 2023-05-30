@@ -10,13 +10,11 @@ namespace CQRSDemo.Repository.Interface
 {
     public interface IUserRepository
     {
-        public Task<List<User>> GetAllUser();
-
-        public Task<User> GetUserData(long UserId);
-        public Task<UserAdd> AddUserData(UserAdd user);
-
-        public Task<UserAdd> EditUserData(UserAdd user);
-
-        public Task<bool> DeleteUserData(long UserId);
+        Task<List<User>> GetAllUser();
+        Task<User> GetUserData(long UserId);
+        Task<UserAdd> AddUserData(UserAdd user);
+        Task<UserAdd> EditUserData(UserAdd user);
+        Task<bool> DeleteUserData(long UserId);
+        Task<List<User>?> SearchUser(string? search, int page, int pageSize);
     }
 }

@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRSDemo.Queries.Application_Queries
+namespace CQRSDemo.Queries.Mission_Queries
 {
-    public class SearchApplicationQuery : IRequest<List<MissionApplication>>
+    public class SearchMissionQuery : IRequest<List<Mission>>
     {
-        public SearchApplicationQuery(string? search, int page, int pageSize)
+        public SearchMissionQuery(string? search, int page, int pageSize)
         {
             Search = search;
             Page = page;
             PageSize = pageSize;
         }
+
         public string? Search { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }

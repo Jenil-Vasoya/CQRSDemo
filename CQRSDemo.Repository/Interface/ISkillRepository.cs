@@ -18,5 +18,7 @@ namespace CQRSDemo.Repository.Interface
         Task<List<Skill>> GetAllSkill();
 
         Task<Skill> GetSkill(long SkillId);
+
+        Task<List<Skill>?> SearchSkill(string? search, int page, int pageSize);
     }
 }

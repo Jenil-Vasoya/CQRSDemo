@@ -64,5 +64,26 @@ namespace CQRSDemo.Repository
             }
             return false;
         }
+
+        public async Task<List<Skill>?> SearchSkill(string? search, int page, int pageSize)
+        {
+            List<Skill> skills = await _CIPlatformContext.Skills.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                skills = skills.Where(b => b.SkillName.ToLower().Contains(search.ToLower())).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                skills = skills.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return skills;
+            }
+            return null;
+        }
     }
 }

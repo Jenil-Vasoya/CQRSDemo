@@ -112,5 +112,26 @@ namespace CQRSDemo.Repository
             return await _CIPlatformContext.Users.FirstAsync(u => u.UserId == userId);
         }
 
+        public async Task<List<User>?> SearchUser(string? search, int page, int pageSize)
+        {
+            List<User> users = await _CIPlatformContext.Users.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                users = users.Where(b => (b.FirstName != null && b.FirstName.ToLower().Contains(search.ToLower())) || (b.LastName != null && b.LastName.ToLower().Contains(search.ToLower()))).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                users = users.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return users;
+            }
+            return null;
+        }
+
     }
 }

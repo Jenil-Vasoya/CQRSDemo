@@ -21,6 +21,30 @@ namespace CQRSDemo.Controllers
             this.mediator = mediator;
         }
 
+
+        [HttpGet]
+        [Route("User Pagination/Search")]
+        public async Task<IActionResult> FindUser([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<User> users = await mediator.Send(dto.ToUserQuery());
+            if (users == null || users.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
         [HttpGet]
         [Route("Get User")]
         public async Task<IActionResult> GetUserData(long UserId)

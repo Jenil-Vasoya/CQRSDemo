@@ -30,6 +30,7 @@ using CQRSDEMO.Handlers.Theme_Handlers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -38,12 +39,14 @@ var configuration = builder.Configuration;
 
 builder.Services.AddDbContext<CIPlatformContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("DbContext")));
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, List<User>>, GetAllUserHandler>();
 builder.Services.AddTransient<IRequestHandler<AddUserDataCommand, UserAdd>, AddUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditUserDataCommand, UserAdd>, EditUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetUserDataQuery, User>, GetUserDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchUserQuery, List<User>>, SearchUserHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteUserDataCommand, bool>, DeleteUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllBannerQuery, List<Banner>>, GetAllBannerHandler>();
 builder.Services.AddTransient<IRequestHandler<AddBannerDataCommand, Banner>, AddBannerDataHandler>();
@@ -59,24 +62,30 @@ builder.Services.AddTransient<IRequestHandler<DeleteApplicationDataCommand, bool
 builder.Services.AddTransient<IRequestHandler<GetAllStoryQuery, List<Story>>, GetAllStoryHandler>();
 builder.Services.AddTransient<IRequestHandler<EditStoryDataCommand, Story>, EditStoryDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetStoryDataQuery, Story>, GetStoryDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchStoryQuery, List<Story>>, SearchStoryHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteStoryDataCommand, bool>, DeleteStoryDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllSkillQuery, List<Skill>>, GetAllSkillHandler>();
 builder.Services.AddTransient<IRequestHandler<AddSkillDataCommand, Skill>, AddSkillDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditSkillDataCommand, Skill>, EditSkillDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetSkillDataQuery, Skill>, GetSkillDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchSkillQuery, List<Skill>>, SearchSkillHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteSkillDataCommand, bool>, DeleteSkillDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllThemeQuery, List<MissionTheme>>, GetAllThemeHandler>();
 builder.Services.AddTransient<IRequestHandler<AddThemeDataCommand, MissionTheme>, AddThemeDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditThemeDataCommand, MissionTheme>, EditThemeDataHandler>();
-builder.Services.AddTransient<IRequestHandler<DeleteThemeDataCommand, bool>, DeleteThemeDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetThemeDataQuery, MissionTheme>, GetThemeDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchThemeQuery, List<MissionTheme>>, SearchThemeHandler>();
+builder.Services.AddTransient<IRequestHandler<DeleteThemeDataCommand, bool>, DeleteThemeDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllCMSQuery, List<Cmspage>>, GetAllCMSHandler>();
 builder.Services.AddTransient<IRequestHandler<AddCMSDataCommand, Cmspage>, AddCMSDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditCMSDataCommand, Cmspage>, EditCMSDataHandler>();
-builder.Services.AddTransient<IRequestHandler<DeleteCMSDataCommand, bool>, DeleteCMSDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetCMSDataQuery, Cmspage>, GetCMSDataHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchCMSQuery, List<Cmspage>>, SearchCMSHandler>();
+builder.Services.AddTransient<IRequestHandler<DeleteCMSDataCommand, bool>, DeleteCMSDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetMissionDataQuery, Mission>, GetMissionDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllMissionQuery, List<Mission>>, GetAllMissionHandler>();
+builder.Services.AddTransient<IRequestHandler<SearchMissionQuery, List<Mission>>, SearchMissionHandler>();
+builder.Services.AddTransient<IRequestHandler<AddMissionDataCommand, MissionAddModel>, AddMissionDataHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteMissionDataCommand, bool>, DeleteMissionDataHandler>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IBannerRepository,BannerRepository>();

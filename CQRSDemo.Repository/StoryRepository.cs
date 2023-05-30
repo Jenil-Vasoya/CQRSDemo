@@ -56,5 +56,26 @@ namespace CQRSDemo.Repository
             }
             return false;
         }
+
+        public async Task<List<Story>?> SearchStory(string? search, int page, int pageSize)
+        {
+            List<Story> stories = await _CIPlatformContext.Stories.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                stories = stories.Where(b => b.Title.ToLower().Contains(search.ToLower())).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                stories = stories.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return stories;
+            }
+            return null;
+        }
     }
 }

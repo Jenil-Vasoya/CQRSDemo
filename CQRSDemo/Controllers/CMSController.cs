@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Commands.CMS_Commands;
 using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.CMS_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,29 @@ namespace CQRSDemo.Controllers
         public CMSController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("CMS Pagination/Search")]
+        public async Task<IActionResult> FindCMS([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<Cmspage> cms = await mediator.Send(dto.ToCMSQuery());
+            if (cms == null || cms.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(cms);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]

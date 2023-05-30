@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Commands.Theme_Commands;
 using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Theme_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,29 @@ namespace CQRSDemo.Controllers
         public ThemeController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("Theme Pagination/Search")]
+        public async Task<IActionResult> FindTheme([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<MissionTheme> themes = await mediator.Send(dto.ToThemeQuery());
+            if (themes == null || themes.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(themes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]

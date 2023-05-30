@@ -5,12 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CQRSDemo.Repository
 {
     public class ApplicationRepository :IApplicationRepository
     {
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         private readonly CIPlatformContext _CIPlatformContext;
 
@@ -64,10 +70,12 @@ namespace CQRSDemo.Repository
             List<MissionApplication> applications = await _CIPlatformContext.MissionApplications
                 .Where(a => missions.Select(m => m.MissionId).Contains(a.MissionId))
                 .ToListAsync();
+
+            
             int count = 0;
             if (search != null)
             {
-                applications = applications.Where(a => a.Mission.Title.Contains(search)).ToList();
+                applications = applications.Where(a => a.Mission.Title.ToLower().Contains(search.ToLower())).ToList();
                 count++;
             }
             if (page != 0 && pageSize != 0)

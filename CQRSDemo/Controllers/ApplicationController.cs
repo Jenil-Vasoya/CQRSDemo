@@ -5,6 +5,8 @@ using CQRSDemo.Queries.Application_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CQRSDemo.Controllers
 {
@@ -14,6 +16,10 @@ namespace CQRSDemo.Controllers
     {
 
         private readonly IMediator mediator;
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         public ApplicationController(IMediator mediator)
         {
@@ -30,7 +36,9 @@ namespace CQRSDemo.Controllers
             }
 
             var applications = await mediator.Send(dto.ToApplicationQuery());
-            if (applications == null || applications.Count == 0)
+
+            //var applications = JsonSerializer.Deserialize<List<MissionApplication>>(application, options);
+            if (applications == null)
             {
                 return NotFound();
             }

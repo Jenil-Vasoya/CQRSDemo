@@ -65,5 +65,26 @@ namespace CQRSDemo.Repository
             }
             return false;
         }
+
+        public async Task<List<Cmspage>?> SearchCMS(string? search, int page, int pageSize)
+        {
+            List<Cmspage> cms = await _CIPlatformContext.Cmspages.ToListAsync();
+            int count = 0;
+            if (search != null)
+            {
+                cms = cms.Where(b => b.Title.Contains(search)).ToList();
+                count++;
+            }
+            if (page != 0 && pageSize != 0)
+            {
+                cms = cms.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                count++;
+            }
+            if (count > 0)
+            {
+                return cms;
+            }
+            return null;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Commands.Story_Commands;
 using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Story_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,30 @@ namespace CQRSDemo.Controllers
         public StoryController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+
+        [HttpGet]
+        [Route("Story Pagination/Search")]
+        public async Task<IActionResult> FindStory([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<Story> stories = await mediator.Send(dto.ToStoryQuery());
+            if (stories == null || stories.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(stories);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]

@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Commands.Skill_Commands;
 using CQRSDemo.Core.Models;
+using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Skill_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,29 @@ namespace CQRSDemo.Controllers
         public SkillController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("Skill Pagination/Search")]
+        public async Task<IActionResult> FindSkill([FromQuery] Pagination dto)
+        {
+            if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)
+            {
+                return BadRequest("Fill Value");
+            }
+            List<Skill> skills = await mediator.Send(dto.ToSkillQuery());
+            if (skills == null || skills.Count == 0)
+            {
+                return NotFound();
+            }
+            try
+            {
+                return Ok(skills);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet]
