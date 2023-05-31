@@ -111,6 +111,12 @@ namespace CQRSDemo.Repository
         {
             return await _CIPlatformContext.Users.FirstAsync(u => u.UserId == userId);
         }
+        
+        public async Task<User> LogInGetUserData(string email, string password)
+        {
+            User user = await _CIPlatformContext.Users.FirstAsync(u => u.Email == email && u.Password == password);
+            return user;
+        }
 
         public async Task<List<User>?> SearchUser(string? search, int page, int pageSize)
         {

@@ -16,5 +16,7 @@ namespace CQRSDemo.Repository.Interface
         Task<UserAdd> EditUserData(UserAdd user);
         Task<bool> DeleteUserData(long UserId);
         Task<List<User>?> SearchUser(string? search, int page, int pageSize);
+
+        Task<User> LogInGetUserData(string email, string password);
     }
 }

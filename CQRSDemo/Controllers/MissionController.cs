@@ -30,7 +30,7 @@ namespace CQRSDemo.Controllers
         }
 
         [HttpGet]
-        [Route("Mission Pagination/Search")]
+        [Route("mission-pagination/search")]
         public async Task<IActionResult> FindMission([FromQuery] Pagination dto)
         {
             if (string.IsNullOrEmpty(dto.Search) && dto.Page == 0 && dto.PageSize == 0)

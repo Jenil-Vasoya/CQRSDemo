@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Core.Models;
 using CQRSDemo.Data.ViewModel;
+using CQRSDemo.Repository.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,24 @@ namespace CQRSDemo.Commands.User_Commands
        public AddUserDataCommand(UserAdd _user)
         {
             user = _user;
+        }
+
+
+        public class AddUserDataHandler : IRequestHandler<AddUserDataCommand, UserAdd>
+        {
+
+            private readonly IUserRepository _userRepository;
+
+            public AddUserDataHandler(IUserRepository userRepository)
+            {
+                _userRepository = userRepository;
+            }
+
+
+            public async Task<UserAdd> Handle(AddUserDataCommand query, CancellationToken cancellationToken)
+            {
+                return await _userRepository.AddUserData(query.user);
+            }
         }
 
     }

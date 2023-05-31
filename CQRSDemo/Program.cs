@@ -28,9 +28,16 @@ using CQRSDEMO.Handlers.Skill_Handlers;
 using CQRSDEMO.Handlers.Story_Handlers;
 using CQRSDEMO.Handlers.Theme_Handlers;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
+using static CQRSDemo.Commands.User_Commands.AddUserDataCommand;
+using static CQRSDemo.Commands.User_Commands.DeleteUserDataCommand;
+using static CQRSDemo.Commands.User_Commands.EditUserDataCommand;
+using static CQRSDemo.Queries.User_Queries.GetAllUserQuery;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -42,10 +49,11 @@ options.UseSqlServer(configuration.GetConnectionString("DbContext")));
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, List<User>>, GetAllUserHandler>();
+builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, List<User>>, Handler>();
 builder.Services.AddTransient<IRequestHandler<AddUserDataCommand, UserAdd>, AddUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditUserDataCommand, UserAdd>, EditUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetUserDataQuery, User>, GetUserDataHandler>();
+builder.Services.AddTransient<IRequestHandler<LogInUserQuery, User>, LogInUserHandler>();
 builder.Services.AddTransient<IRequestHandler<SearchUserQuery, List<User>>, SearchUserHandler>();
 builder.Services.AddTransient<IRequestHandler<DeleteUserDataCommand, bool>, DeleteUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllBannerQuery, List<Banner>>, GetAllBannerHandler>();
@@ -95,9 +103,26 @@ builder.Services.AddScoped<ISkillRepository,SkillRepository>();
 builder.Services.AddScoped<IThemeRepository, ThemeRepository>();
 builder.Services.AddScoped<ICMSRepository,CMSRepository>();
 builder.Services.AddScoped<IMissionRepository,MissionRepository>();
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -108,6 +133,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSession();
+app.Use(async (context, next) =>
+{
+    var token = context.Session.GetString("Token");
+    if (!string.IsNullOrWhiteSpace(token))
+    {
+        context.Request.Headers.Add("Authorization", "Bearer " + token);
+    }
+    await next();
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

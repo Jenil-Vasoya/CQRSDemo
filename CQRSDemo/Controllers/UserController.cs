@@ -5,6 +5,10 @@ using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.User_Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CQRSDemo.Controllers
 {
@@ -13,14 +17,22 @@ namespace CQRSDemo.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-
+        public IConfiguration _configuration;
         private readonly IMediator mediator;
 
-        public UserController(IMediator mediator)
+        public UserController(IConfiguration config,IMediator mediator)
         {
+            _configuration = config;
             this.mediator = mediator;
         }
 
+        [HttpPost]
+        [Route("user-login")]
+        public async Task<IActionResult> LogIn(string email, string password)
+        {
+            var user = await mediator.Send(new LogInUserQuery() { email = email, password = password });
+            return Ok(user);
+        }
 
         [HttpGet]
         [Route("User Pagination/Search")]

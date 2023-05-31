@@ -1,4 +1,5 @@
 ﻿using CQRSDemo.Core.Models;
+using CQRSDemo.Repository.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,19 @@ namespace CQRSDemo.Queries.User_Queries
         public string? Search { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
+    }
+
+    public class SearchUserHandler : IRequestHandler<SearchUserQuery, List<User>>
+    {
+        private readonly IUserRepository _userRepository;
+
+        public SearchUserHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+        public async Task<List<User>?> Handle(SearchUserQuery request, CancellationToken cancellationToken)
+        {
+            return await _userRepository.SearchUser(request.Search, request.Page, request.PageSize);
+        }
     }
 }

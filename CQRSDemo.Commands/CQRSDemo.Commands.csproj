@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRSDemo.Data\CQRSDemo.Data.csproj" />
+    <ProjectReference Include="..\CQRSDemo.Repository\CQRSDemo.Repository.csproj" />
   </ItemGroup>
 
 </Project>
