@@ -1,3 +1,4 @@
+using CQRSDemo.Auth;
 using CQRSDemo.Commands;
 using CQRSDemo.Commands.Application_Commands;
 using CQRSDemo.Commands.Banner_Commands;
@@ -125,7 +126,7 @@ builder.Services.AddSwaggerGen(
     {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title = "My API",
+            Title = "CQRSDemo",
             Version = "v1"
         });
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -176,6 +177,7 @@ if (app.Environment.IsDevelopment())
 //    }
 //    await next();
 //});
+app.UseMiddleware<UnauthorizedMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
