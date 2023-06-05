@@ -50,7 +50,7 @@ options.UseSqlServer(configuration.GetConnectionString("DbContext")));
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, List<User>>, Handler>();
+builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, IEnumerable<User>>, Handler>();
 builder.Services.AddTransient<IRequestHandler<AddUserDataCommand, UserAdd>, AddUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<EditUserDataCommand, UserAdd>, EditUserDataHandler>();
 builder.Services.AddTransient<IRequestHandler<GetUserDataQuery, User>, GetUserDataHandler>();

@@ -5,6 +5,7 @@ using CQRSDemo.Controllers.DTOS;
 using CQRSDemo.Core.Models;
 using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.User_Queries;
+using CQRSDemo.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CQRSDemo.Repository.DTOs;
 
 namespace CQRSDemo.Controllers
 {
@@ -90,10 +92,10 @@ namespace CQRSDemo.Controllers
         [Authorize]
         [HttpGet]
         [Route("Users")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] Paging dto)
         {
 
-            var user = await mediator.Send(new GetAllUserQuery());
+            var user = await mediator.Send(new GetAllUserQuery(dto));
 
             if (user == null)
             {
@@ -206,19 +208,19 @@ namespace CQRSDemo.Controllers
         [Route("division")]
         public async Task<float> Demo([FromQuery] Division dto)
         {
-            float result = dto.Divide(dto.dividend, dto.divisor);
+            float result = await dto.dividend.CustomDivideAsync(dto.divisor);
             return result;
         }
         
-        [HttpGet]
-        [Route("pagination")]
-        public async Task<IEnumerable<User>> Demo([FromQuery] Pagination dto)
-        {
-            List<User> user = await mediator.Send(new GetAllUserQuery());
+        //[HttpGet]
+        //[Route("pagination")]
+        //public async Task<IEnumerable<User>> Demo([FromQuery] Pagination dto)
+        //{
+        //    List<User> user = await mediator.Send(new GetAllUserQuery());
 
-            var result = Paginate.Pagination(user,dto.Page, dto.PageSize);
-            return result;
-        }
+        //    var result = user.Pagination(dto.Page, dto.PageSize);
+        //    return result;
+        //}
 
         
     }

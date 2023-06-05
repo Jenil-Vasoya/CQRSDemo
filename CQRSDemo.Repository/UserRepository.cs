@@ -2,11 +2,13 @@
 using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using CQRSDemo.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CQRSDemo.Repository.DTOs;
 
 namespace CQRSDemo.Repository
 {
@@ -19,9 +21,9 @@ namespace CQRSDemo.Repository
             _CIPlatformContext = CIPlatformContext;
         }
 
-        public async Task<List<User>> GetAllUser()
+        public async Task<IEnumerable<User>> GetAllUser(Paging dto)
         {
-            return await _CIPlatformContext.Users.ToListAsync();
+            return await _CIPlatformContext.Users.Pagination(dto.Page, dto.PageSize);
         }
 
         public async Task<UserAdd> AddUserData(UserAdd user)

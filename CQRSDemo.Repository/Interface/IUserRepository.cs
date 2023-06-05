@@ -1,5 +1,6 @@
 ﻿using CQRSDemo.Core.Models;
 using CQRSDemo.Data.ViewModel;
+using CQRSDemo.Repository.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CQRSDemo.Repository.Interface
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUser();
+        Task<IEnumerable<User>> GetAllUser(Paging? dto);
         Task<User> GetUserData(long UserId);
         Task<UserAdd> AddUserData(UserAdd user);
         Task<UserAdd> EditUserData(UserAdd user);
