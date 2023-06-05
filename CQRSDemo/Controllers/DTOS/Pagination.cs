@@ -58,5 +58,7 @@ namespace CQRSDemo.Data.ViewModel
         {
             return new SearchUserQuery(Search,Page,PageSize);
         }
+
+
     }
 }

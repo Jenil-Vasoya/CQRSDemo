@@ -1,9 +1,12 @@
-﻿using CQRSDemo.Commands;
+﻿using CQRSDemo.Auth;
+using CQRSDemo.Commands;
 using CQRSDemo.Commands.User_Commands;
+using CQRSDemo.Controllers.DTOS;
 using CQRSDemo.Core.Models;
 using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.User_Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,7 +20,7 @@ namespace CQRSDemo.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        public IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private readonly IMediator mediator;
 
         public UserController(IConfiguration config,IMediator mediator)
@@ -31,7 +34,14 @@ namespace CQRSDemo.Controllers
         public async Task<IActionResult> LogIn(string email, string password)
         {
             var user = await mediator.Send(new LogInUserQuery() { email = email, password = password });
-            return Ok(user);
+
+            JwtTokenHelper jwt = new JwtTokenHelper();
+            Jwt jwt1 = new Jwt();
+            jwt1.key = _configuration["Jwt:Key"];
+            jwt1.issuer = _configuration["Jwt:Issuer"];
+            jwt1.audience = _configuration["Jwt:Audience"];
+            var token = jwt.GenerateToken(user,jwt1);
+            return Ok(token);
         }
 
         [HttpGet]
@@ -77,6 +87,7 @@ namespace CQRSDemo.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Users")]
         public async Task<IActionResult> GetAll()
@@ -191,5 +202,24 @@ namespace CQRSDemo.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("division")]
+        public async Task<float> Demo([FromQuery] Division dto)
+        {
+            float result = dto.Divide(dto.dividend, dto.divisor);
+            return result;
+        }
+        
+        [HttpGet]
+        [Route("pagination")]
+        public async Task<IEnumerable<User>> Demo([FromQuery] Pagination dto)
+        {
+            List<User> user = await mediator.Send(new GetAllUserQuery());
+
+            var result = Paginate.Pagination(user,dto.Page, dto.PageSize);
+            return result;
+        }
+
+        
     }
 }
