@@ -117,8 +117,8 @@ namespace CQRSDemo.Controllers
         {
             UserAdd user = AddDataModel(null,img,FirstName, LastName, Email, Password, EmployeeId, Department, CityId, CountryId, Status, Role, ProfileText);
             var command = new AddUserDataCommand(user);
-            var result = await mediator.Send(command);
-            
+            //var result = await mediator.Send(command);
+            await mediator.Publish(command);
         
 
             if (user == null)
@@ -128,7 +128,7 @@ namespace CQRSDemo.Controllers
 
             try
             {
-                return Ok(user);
+                return Ok("User Registration Done");
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ namespace CQRSDemo.Repository.Interface
     {
         Task<IEnumerable<User>> GetAllUser(Paging? dto);
         Task<User> GetUserData(long UserId);
-        Task<UserAdd> AddUserData(UserAdd user);
+        Task<long> AddUserData(UserAdd user);
         Task<UserAdd> EditUserData(UserAdd user);
         Task<bool> DeleteUserData(long UserId);
         Task<List<User>?> SearchUser(string? search, int page, int pageSize);

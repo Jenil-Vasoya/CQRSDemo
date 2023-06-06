@@ -9,11 +9,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CQRSDemo.Repository.DTOs;
+using CQRSDemo.Repository.Extensions;
 
 namespace CQRSDemo.Repository
 {
     public class UserRepository : IUserRepository
     {
+        public float Divide(float dividend, float divisor)
+        {
+            return dividend / divisor;
+        }
+
+        private bool Demo(User u, long UserId)
+        {
+            return u.UserId == UserId;
+        }
+
         private readonly CIPlatformContext _CIPlatformContext;
 
         public UserRepository(CIPlatformContext CIPlatformContext)
@@ -21,12 +32,13 @@ namespace CQRSDemo.Repository
             _CIPlatformContext = CIPlatformContext;
         }
 
-        public async Task<IEnumerable<User>> GetAllUser(Paging dto)
+        public async Task<IEnumerable<User>> GetAllUser(Paging paging)
         {
-            return await _CIPlatformContext.Users.Pagination(dto.Page, dto.PageSize);
+            //return await _CIPlatformContext.Users.Where(Specification.IsActive()).ToListAsync();
+            return await _CIPlatformContext.Users.Pagination(paging);
         }
 
-        public async Task<UserAdd> AddUserData(UserAdd user)
+        public async Task<long> AddUserData(UserAdd user)
         {
             User user1 = new User();
             user1.FirstName = user.FirstName;
@@ -55,8 +67,7 @@ namespace CQRSDemo.Repository
             _CIPlatformContext.Users.Add(user1);
             await _CIPlatformContext.SaveChangesAsync();
 
-            return user;
-
+            return user1.UserId;
         }
 
         public async Task<UserAdd> EditUserData(UserAdd user)
@@ -98,7 +109,8 @@ namespace CQRSDemo.Repository
 
         public async Task<bool> DeleteUserData(long UserId)
         {
-            var user1 = _CIPlatformContext.Users.Where(u => u.UserId == UserId).FirstOrDefault();
+            var user1 = _CIPlatformContext.Users.Where(Specification.HasId(UserId)).FirstOrDefault();
+
             if (user1 != null)
             {
                 user1.DeletedAt = DateTime.Now;

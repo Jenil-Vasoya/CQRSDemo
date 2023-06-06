@@ -1,4 +1,6 @@
-﻿namespace CQRSDemo.Extensions
+﻿using CQRSDemo.Repository.DTOs;
+
+namespace CQRSDemo.Extensions
 {
     public static class MyExtensions
     {
@@ -7,9 +9,9 @@
             return await Task.Run(() => dividend / divisor);
         }
 
-        public static async Task<IEnumerable<T>> Pagination<T>(this IEnumerable<T> collection, int page, int pageSize)
+        public static async Task<IEnumerable<T>> Pagination<T>(this IEnumerable<T> collection, Paging paging)
         {
-            return await Task.Run(() => collection.Skip((page - 1) * pageSize).Take(pageSize));
-        }
+            return await Task.Run(() => collection.Skip((paging.Page - 1) * paging.PageSize).Take(paging.PageSize));
+        }   
     }
 }
