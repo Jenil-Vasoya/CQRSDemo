@@ -18,6 +18,7 @@ using DotNetCore.CAP;
 
 namespace CQRSDemo.Controllers
 {
+    [MyTrackingActionFilter]
     [ApiController]
     [Route("[controller]")]
     public class UserController : Controller
