@@ -15,15 +15,6 @@ namespace CQRSDemo.Repository
 {
     public class UserRepository : IUserRepository
     {
-        public float Divide(float dividend, float divisor)
-        {
-            return dividend / divisor;
-        }
-
-        private bool Demo(User u, long UserId)
-        {
-            return u.UserId == UserId;
-        }
 
         private readonly CIPlatformContext _CIPlatformContext;
 

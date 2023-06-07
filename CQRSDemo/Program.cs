@@ -1,3 +1,4 @@
+using CQRSDemo;
 using CQRSDemo.Auth;
 using CQRSDemo.Commands.Application_Commands;
 using CQRSDemo.Commands.Banner_Commands;
@@ -32,6 +33,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Savorboard.CAP.InMemoryMessageQueue;
 using System.Text;
 using System.Text.Json.Serialization;
 using static CQRSDemo.Commands.User_Commands.AddUserDataCommand;
@@ -43,12 +45,17 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
-
+builder.Services.AddCap(x =>
+{
+    x.UseInMemoryStorage();
+    x.UseInMemoryMessageQueue();
+});
 builder.Services.AddDbContext<CIPlatformContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("DbContext")));
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddMediatR(typeof(Program));
+builder.Services.AddTransient<HelloWorldReceiver>(); 
 builder.Services.AddTransient<IRequestHandler<GetAllUserQuery, IEnumerable<User>>, Handler>();
 builder.Services.AddTransient<INotificationHandler<AddUserDataCommand>, AddUserDataHandler>();
 builder.Services.AddTransient<INotificationHandler<GetUserDataNotification>, GetUserDataHandlerNotification>();

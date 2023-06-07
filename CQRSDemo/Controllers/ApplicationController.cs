@@ -2,6 +2,7 @@
 using CQRSDemo.Core.Models;
 using CQRSDemo.Data.ViewModel;
 using CQRSDemo.Queries.Application_Queries;
+using DotNetCore.CAP;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -124,6 +125,7 @@ namespace CQRSDemo.Controllers
         }
 
         [HttpDelete]
+        [CapSubscribe("test.show.time")]
         [Route("Delete Application")]
         public async Task<IActionResult> DeleteApplication(long ApplicationId)
         {
@@ -138,6 +140,14 @@ namespace CQRSDemo.Controllers
             {
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
+        }
+
+
+        [NonAction]
+        [CapSubscribe("test.show.time")]
+        public void ReceiveMessage(DateTime time)
+        {
+            Console.WriteLine("message time is:" + time);
         }
     }
 }

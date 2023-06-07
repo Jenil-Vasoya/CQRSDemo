@@ -18,7 +18,6 @@ namespace CQRSDemo.Repository.Extensions
             return new AdHocSpecification<User>(e => (bool)e.Status);
         }
 
-
     }
 
 }

@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CQRSDemo.Repository.DTOs;
+using DotNetCore.CAP;
 
 namespace CQRSDemo.Controllers
 {
@@ -23,11 +24,13 @@ namespace CQRSDemo.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IMediator mediator;
+        private readonly ICapPublisher _capPublisher;
 
-        public UserController(IConfiguration config,IMediator mediator)
+        public UserController(IConfiguration config,IMediator mediator, ICapPublisher capPublisher)
         {
             _configuration = config;
             this.mediator = mediator;
+            _capPublisher = capPublisher;
         }
 
         [HttpPost]
@@ -207,10 +210,30 @@ namespace CQRSDemo.Controllers
         [Route("division")]
         public async Task<float> Demo([FromQuery] Division dto)
         {
+            //_capPublisher.Publish("helloWorld", "CodeOpinion");
             float result = await dto.dividend.CustomDivideAsync(dto.divisor);
             return result;
         }
+
+        [HttpGet]
+        [Route("~/send")]
+        public IActionResult SendMessage(long id)
+        {
+            _capPublisher.Publish("test.show.time", id);
+            
+            return Ok();
+        }
+
         
+
+        //[Route("~/send/delay")]
+        //public IActionResult SendDelayMessage([FromServices] ICapPublisher capBus)
+        //{
+        //    capBus.PublishDelay(TimeSpan.FromSeconds(100), "test.show.time", DateTime.Now);
+
+        //    return Ok();
+        //}
+
         //[HttpGet]
         //[Route("pagination")]
         //public async Task<IEnumerable<User>> Demo([FromQuery] Pagination dto)
@@ -221,6 +244,6 @@ namespace CQRSDemo.Controllers
         //    return result;
         //}
 
-        
+
     }
 }
