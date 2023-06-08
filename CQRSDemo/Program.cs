@@ -50,6 +50,7 @@ builder.Services.AddCap(x =>
     x.UseInMemoryStorage();
     x.UseInMemoryMessageQueue();
 });
+
 builder.Services.AddDbContext<CIPlatformContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("DbContext")));
 builder.Services.AddControllersWithViews()
@@ -111,6 +112,7 @@ builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IThemeRepository, ThemeRepository>();
 builder.Services.AddScoped<ICMSRepository, CMSRepository>();
 builder.Services.AddScoped<IMissionRepository, MissionRepository>();
+builder.Services.AddScoped<CustomExceptionFilter>();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

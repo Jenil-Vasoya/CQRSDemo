@@ -20,6 +20,7 @@ namespace CQRSDemo.Controllers
 {
     [MyTrackingActionFilter]
     [ApiController]
+    [ServiceFilter(typeof(CustomExceptionFilter))]
     [Route("[controller]")]
     public class UserController : Controller
     {
@@ -34,6 +35,7 @@ namespace CQRSDemo.Controllers
             _capPublisher = capPublisher;
         }
 
+        
         [HttpPost]
         [Route("user-login")]
         public async Task<IActionResult> LogIn(string email, string password)

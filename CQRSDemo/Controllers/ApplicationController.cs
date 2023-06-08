@@ -17,10 +17,10 @@ namespace CQRSDemo.Controllers
     {
 
         private readonly IMediator mediator;
-        JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            ReferenceHandler = ReferenceHandler.Preserve
-        };
+        //JsonSerializerOptions options = new JsonSerializerOptions
+        //{
+        //    ReferenceHandler = ReferenceHandler.Preserve
+        //};
 
         public ApplicationController(IMediator mediator)
         {
