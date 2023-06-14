@@ -15,6 +15,9 @@ using System.Security.Claims;
 using System.Text;
 using CQRSDemo.Repository.DTOs;
 using DotNetCore.CAP;
+using System.Net;
+using System.Web;
+using System.Net.Sockets;
 
 namespace CQRSDemo.Controllers
 {
@@ -40,6 +43,50 @@ namespace CQRSDemo.Controllers
         [Route("user-login")]
         public async Task<IActionResult> LogIn(string email, string password)
         {
+
+            //HttpContext context = HttpContext.Current;
+
+            //// Get the client's IP address from the current request
+            //string ipAddress = context.Request.UserHostAddress;
+
+            string ipAddress1 = string.Empty;
+
+            IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (IPAddress address in hostEntry.AddressList)
+            {
+                if (address.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    ipAddress1 = address.ToString();
+                    break;
+                }
+            }
+            Console.WriteLine($"User IP Address: {ipAddress1}");
+
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    var ip1 = ip.ToString();
+                    Console.WriteLine("My IP Address is :" + ip1);
+                }
+            }
+            string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            Console.WriteLine($"User IP Address: {ipAddress}");
+
+            //var hostName = Dns.GetHostName(); // Retrive the Name of HOST
+            //Console.WriteLine(hostName);
+
+            //string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+            //Console.WriteLine("My IP Address is :" + myIP);
+            
+            //string myIP1 = Dns.GetHostByName(hostName).AddressList[1].ToString();
+            //Console.WriteLine("My IP Address is :" + myIP1);
+
+
+
             var user = await mediator.Send(new LogInUserQuery() { email = email, password = password });
 
             JwtTokenHelper jwt = new JwtTokenHelper();
@@ -50,6 +97,8 @@ namespace CQRSDemo.Controllers
             var token = jwt.GenerateToken(user,jwt1);
             return Ok(token);
         }
+
+       
 
         [HttpGet]
         [Route("User Pagination/Search")]
