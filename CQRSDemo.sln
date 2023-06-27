@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDemo", "CQRSDemo\CQRSDe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDemo.Data", "CQRSDemo.Data\CQRSDemo.Data.csproj", "{1C40F278-B693-41F6-BEDE-33285E26667F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.Repository", "CQRSDemo.Repository\CQRSDemo.Repository.csproj", "{D7E0BC64-84A5-42DE-9DB1-E4174E309E74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDemo.Repository", "CQRSDemo.Repository\CQRSDemo.Repository.csproj", "{D7E0BC64-84A5-42DE-9DB1-E4174E309E74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.Queries", "CQRSDemo.Queries\CQRSDemo.Queries.csproj", "{49BA045E-51A8-47F8-8508-C60E05A3A854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDemo.Queries", "CQRSDemo.Queries\CQRSDemo.Queries.csproj", "{49BA045E-51A8-47F8-8508-C60E05A3A854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.Commands", "CQRSDemo.Commands\CQRSDemo.Commands.csproj", "{1A586135-70D1-4BEF-860C-524891D5D034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDemo.Commands", "CQRSDemo.Commands\CQRSDemo.Commands.csproj", "{1A586135-70D1-4BEF-860C-524891D5D034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDEMO.Handlers", "CQRSDEMO.Handlers\CQRSDEMO.Handlers.csproj", "{B2BDD188-0D1B-4887-B1DC-D3D71397E46B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRSDEMO.Handlers", "CQRSDEMO.Handlers\CQRSDEMO.Handlers.csproj", "{B2BDD188-0D1B-4887-B1DC-D3D71397E46B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemoFrontend", "CQRSDemoFrontend\CQRSDemoFrontend.csproj", "{078C30B8-989E-4B73-B007-C14988B2B328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B2BDD188-0D1B-4887-B1DC-D3D71397E46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2BDD188-0D1B-4887-B1DC-D3D71397E46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2BDD188-0D1B-4887-B1DC-D3D71397E46B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{078C30B8-989E-4B73-B007-C14988B2B328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{078C30B8-989E-4B73-B007-C14988B2B328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{078C30B8-989E-4B73-B007-C14988B2B328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{078C30B8-989E-4B73-B007-C14988B2B328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

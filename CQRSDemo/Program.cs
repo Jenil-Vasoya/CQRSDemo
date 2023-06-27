@@ -53,6 +53,30 @@ builder.Services.AddCap(x =>
 
 builder.Services.AddDbContext<CIPlatformContext>(options =>
 options.UseSqlServer(configuration.GetConnectionString("DbContext")));
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AddUpdatePolicy", policy =>
+       policy.RequireRole("admin", "user")
+             .RequireAssertion(context =>
+                       context.User.HasClaim(claim =>
+                         (claim.Type == "permission" &&
+                          claim.Value == "CanAdd" || claim.Value == "CanUpdate"
+                         )
+                       )
+                    ));
+
+    options.AddPolicy("DeletePolicy", policy =>
+        policy.RequireRole("admin")
+              .RequireAssertion(context =>
+                       context.User.HasClaim(claim =>
+                         (claim.Type == "permission" &&
+                          (claim.Value == "CanDelete")
+                         )
+                       )
+                    ));
+});
+
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddMediatR(typeof(Program));
